@@ -28,7 +28,7 @@ module.exports.register = function (Handlebars, options, params) {
    * @return {String}         Returns compiled HTML
    * @xample: {{partial 'foo' bar}}
    */
-  Handlebars.registerHelper('partial', function(name, context) {
+  Handlebars.registerHelper('component', function(name) {
     if(!Array.isArray(assemble.partials)) {
       assemble.partials = [assemble.partials];
     }
@@ -56,6 +56,8 @@ module.exports.register = function (Handlebars, options, params) {
     var omit = function(target) {
       return _.omit(target, 'pages', 'pagination');
     };
+
+    var context = arguments[1].hash;
 
     // Remove page content from `this` and `opts` before creating new context
     context = _.extend({}, grunt.config.data, omit(opts), omit(this), opts.data[name], metadata, context);

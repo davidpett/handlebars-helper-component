@@ -59,12 +59,6 @@ module.exports.register = function (Handlebars, options, params) {
 
     var context = arguments[1].hash;
 
-    // Remove page content from `this` and `opts` before creating new context
-    context = _.extend({}, grunt.config.data, omit(opts), omit(this), opts.data[name], metadata, context);
-
-    // process any templates inside context property values
-    context = grunt.config.process(context);
-
     // look up this partial name from the partials registered with Handlebars
     var template = Handlebars.partials[name];
 
@@ -83,6 +77,10 @@ module.exports.register = function (Handlebars, options, params) {
     var include = opts.include || opts.data.include || {};
     if(include.origin === true) {
       output = '<!-- ' + filepath + ' -->\n' + output;
+    }
+    
+    if (context.unsafe) {
+      return output;
     }
 
     return new Handlebars.SafeString(output);
